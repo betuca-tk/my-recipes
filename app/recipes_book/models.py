@@ -15,6 +15,9 @@ class Recipe(models.Model):
             "id": self.id,
             "name": self.name,
             "description": self.description,
+            "ingredients": [
+                ingredient.to_dict() for ingredient in self.ingredients.all()
+            ],
         }
 
 

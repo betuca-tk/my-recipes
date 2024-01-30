@@ -1,6 +1,8 @@
 from django.urls import path
-from .views import ListRecipesView
+from .views import RecipesView
+
+app_name = "recipes_book"
 
 urlpatterns = [
-    path("", ListRecipesView.as_view(), name="list_recipes"),
+    path("", RecipesView.as_view()),
 ]

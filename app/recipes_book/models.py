@@ -8,3 +8,10 @@ class Recipe(models.Model):
 
     def __str__(self):
         return f"({self.id}) recipe: {self.name}. Description: {self.description}"
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "description": self.description,
+        }

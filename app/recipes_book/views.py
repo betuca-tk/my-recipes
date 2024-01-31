@@ -9,14 +9,13 @@ class RecipesView(View):
         if recipe_id:
             recipe = self._load_by_id(recipe_id)
             return JsonResponse(recipe)
+        elif request.GET.get("name"):
+            filter_name = request.GET.get("name")
+            recipes = self._load_recipes_by_name(filter_name)
+            return JsonResponse(recipes, safe=False)
         else:
             recipes = self._load_all_recipes()
             return JsonResponse(recipes, safe=False)
-
-    def _load_all_recipes(self):
-        recipes = models.Recipe.objects.all()
-        recipes_result = [recipe.to_dict() for recipe in recipes]
-        return recipes_result
 
     def _load_by_id(self, recipe_id):
         try:
@@ -24,6 +23,16 @@ class RecipesView(View):
             return recipe.to_dict()
         except models.Recipe.DoesNotExist:
             raise Http404("Recipe not found")
+
+    def _load_all_recipes(self):
+        recipes = models.Recipe.objects.all()
+        recipes_result = [recipe.to_dict() for recipe in recipes]
+        return recipes_result
+
+    def _load_recipes_by_name(self, name):
+        recipes = models.Recipe.objects.filter(name__icontains=name)
+        recipes_result = [recipe.to_dict() for recipe in recipes]
+        return recipes_result
 
     def post(self, request):
         data = json.loads(request.body)

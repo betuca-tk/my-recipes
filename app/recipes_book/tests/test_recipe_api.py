@@ -72,8 +72,12 @@ class RecipeTest(TestCase):
         self.assertEqual(recipe1_data["name"], self.recipe_one.name)
         self.assertEqual(recipe1_data["description"], self.recipe_one.description)
         self.assertEqual(len(recipe1_data["ingredients"]), 2)
-        self.assertEqual(recipe1_data["ingredients"][0]["name"], self.ingredient_one.name)
-        self.assertEqual(recipe1_data["ingredients"][1]["name"], self.ingredient_two.name)
+        self.assertEqual(
+            recipe1_data["ingredients"][0]["name"], self.ingredient_one.name
+        )
+        self.assertEqual(
+            recipe1_data["ingredients"][1]["name"], self.ingredient_two.name
+        )
 
         recipe2_data = response_data[1]
         self.assertEqual(recipe2_data["name"], self.recipe_two.name)
@@ -90,8 +94,12 @@ class RecipeTest(TestCase):
         self.assertEqual(response_data["name"], self.recipe_one.name)
         self.assertEqual(response_data["description"], self.recipe_one.description)
         self.assertEqual(len(response_data["ingredients"]), 2)
-        self.assertEqual(response_data["ingredients"][0]["name"], self.ingredient_one.name)
-        self.assertEqual(response_data["ingredients"][1]["name"], self.ingredient_two.name)
+        self.assertEqual(
+            response_data["ingredients"][0]["name"], self.ingredient_one.name
+        )
+        self.assertEqual(
+            response_data["ingredients"][1]["name"], self.ingredient_two.name
+        )
 
     def test_get_recipe_by_id_not_found(self):
         """
@@ -168,3 +176,17 @@ class RecipeTest(TestCase):
 
         with self.assertRaises(Ingredient.DoesNotExist):
             Ingredient.objects.get(name=self.ingredient_two.name)
+
+    def test_filter_get_recipes_by_name(self):
+        """
+        Test GET response for recipe list filtered by name
+        """
+        response = self.client.get("/recipes/?name=Second")
+        self.assertEqual(response.status_code, 200)
+
+        response_data = response.json()
+        self.assertEqual(len(response_data), 1)
+
+        recipe2_data = response_data[0]
+        self.assertEqual(recipe2_data["name"], self.recipe_two.name)
+        self.assertEqual(recipe2_data["description"], self.recipe_two.description)

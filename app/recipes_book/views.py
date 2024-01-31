@@ -1,5 +1,5 @@
 from . import models
-from django.http import JsonResponse, Http404
+from django.http import JsonResponse, Http404, HttpResponse
 from django.views import View
 import json
 
@@ -36,8 +36,11 @@ class RecipesView(View):
     def delete(self, request, recipe_id):
         try:
             recipe = models.Recipe.objects.get(id=recipe_id)
+            if recipe.ingredients:
+                for ingredient in recipe.ingredients.all():
+                    ingredient.delete()
             recipe.delete()
-            return JsonResponse({"message": "Recipe deleted successfully"}, status=204)
+            return HttpResponse(status=204)
         except models.Recipe.DoesNotExist:
             raise Http404("Recipe not found")
 

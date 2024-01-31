@@ -7,7 +7,6 @@ class RecipeTest(TestCase):
     """
     Test module for Recipe model
     """
-
     def test_create_recipe_response(self):
         """
         Test POST response for recipe creation
@@ -147,7 +146,6 @@ class RecipeTest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         response_data = response.json()
-        print(response_data)
         self.assertEqual(response_data["name"], patch_data["name"])
         self.assertEqual(response_data["description"], patch_data["description"])
         self.assertEqual(len(response_data["ingredients"]), 2)
@@ -183,3 +181,28 @@ class RecipeTest(TestCase):
         response_data = response.json()
         self.assertEqual(response_data["name"], recipe1.name)
         self.assertEqual(response_data["description"], patch_data["description"])
+
+    def test_delete_recipe(self):
+        """
+        Test DELETE response for recipe
+        """
+        recipe1 = Recipe.objects.create(
+            name="Recipe 1",
+            description="Recipe 1 description",
+        )
+        ingredient1 = Ingredient.objects.create(name="Ingredient 1")
+        ingredient2 = Ingredient.objects.create(name="Ingredient 2")
+        recipe1.ingredients.add(ingredient1)
+        recipe1.ingredients.add(ingredient2)
+
+        response = self.client.delete(f"/recipes/{recipe1.id}/")
+        self.assertEqual(response.status_code, 204)
+
+        with self.assertRaises(Recipe.DoesNotExist):
+            Recipe.objects.get(name=recipe1.name)
+
+        with self.assertRaises(Ingredient.DoesNotExist):
+            Ingredient.objects.get(name=ingredient1.name)
+
+        with self.assertRaises(Ingredient.DoesNotExist):
+            Ingredient.objects.get(name=ingredient2.name)

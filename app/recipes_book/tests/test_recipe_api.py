@@ -109,3 +109,77 @@ class RecipeTest(TestCase):
         self.assertEqual(len(response_data["ingredients"]), 2)
         self.assertEqual(response_data["ingredients"][0]["name"], "Ingredient 1")
         self.assertEqual(response_data["ingredients"][1]["name"], "Ingredient 2")
+
+    def test_get_recipe_by_id_not_found(self):
+        """
+        Test GET response for recipe by id not found
+        """
+        response = self.client.get("/recipes/1/")
+        self.assertEqual(response.status_code, 404)
+
+    def test_update_recipe_entire_date(self):
+        """
+        Test PATCH response for recipe entire data update
+        """
+        recipe1 = Recipe.objects.create(
+            name="Recipe 1",
+            description="Recipe 1 description",
+        )
+        ingredient1 = Ingredient.objects.create(name="Ingredient 1")
+        ingredient2 = Ingredient.objects.create(name="Ingredient 2")
+        recipe1.ingredients.add(ingredient1)
+        recipe1.ingredients.add(ingredient2)
+
+        patch_data = {
+            "name": "Recipe 1 updated",
+            "description": "Recipe 1 description updated",
+            "ingredients": [
+                {"name": "Ingredient 1 updated"},
+                {"name": "Ingredient 2 updated"},
+            ],
+        }
+
+        response = self.client.patch(
+            f"/recipes/{recipe1.id}/",
+            json.dumps(patch_data),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+
+        response_data = response.json()
+        print(response_data)
+        self.assertEqual(response_data["name"], patch_data["name"])
+        self.assertEqual(response_data["description"], patch_data["description"])
+        self.assertEqual(len(response_data["ingredients"]), 2)
+        self.assertEqual(
+            response_data["ingredients"][0]["name"],
+            patch_data["ingredients"][0]["name"],
+        )
+        self.assertEqual(
+            response_data["ingredients"][1]["name"],
+            patch_data["ingredients"][1]["name"],
+        )
+
+    def test_update_recipe_partial_data(self):
+        """
+        Test PATCH response for recipe partial data update
+        """
+        recipe1 = Recipe.objects.create(
+            name="Recipe 1",
+            description="Recipe 1 description",
+        )
+
+        patch_data = {
+            "description": "Recipe 1 description updated",
+        }
+
+        response = self.client.patch(
+            f"/recipes/{recipe1.id}/",
+            json.dumps(patch_data),
+            content_type="application/json",
+        )
+        self.assertEqual(response.status_code, 200)
+
+        response_data = response.json()
+        self.assertEqual(response_data["name"], recipe1.name)
+        self.assertEqual(response_data["description"], patch_data["description"])

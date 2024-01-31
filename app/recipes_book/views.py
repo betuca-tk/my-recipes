@@ -30,9 +30,7 @@ class RecipesView(View):
         recipe = models.Recipe.objects.create(
             name=data["name"], description=data["description"]
         )
-        for ingredient_name in data["ingredients"]:
-            ingredient = models.Ingredient.objects.create(name=ingredient_name)
-            recipe.ingredients.add(ingredient)
+        self._add_ingridients(recipe, data)
         return JsonResponse(recipe.to_dict(), status=201)
 
     def delete(self, request, recipe_id):
@@ -42,3 +40,25 @@ class RecipesView(View):
             return JsonResponse({"message": "Recipe deleted successfully"}, status=204)
         except models.Recipe.DoesNotExist:
             raise Http404("Recipe not found")
+
+    def patch(self, request, recipe_id):
+        try:
+            recipe = models.Recipe.objects.get(id=recipe_id)
+            data = json.loads(request.body)
+            recipe.name = data["name"] if "name" in data else recipe.name
+            recipe.description = (
+                data["description"] if "description" in data else recipe.description
+            )
+            recipe.ingredients.clear()
+            if "ingredients" in data:
+                self._add_ingridients(recipe, data)
+            recipe.save()
+            return JsonResponse(recipe.to_dict(), status=200)
+        except models.Recipe.DoesNotExist:
+            raise Http404("Recipe not found")
+
+    def _add_ingridients(self, recipe, data):
+        for ingredient in data["ingredients"]:
+            ingredient = models.Ingredient.objects.create(name=ingredient["name"])
+            recipe.ingredients.add(ingredient)
+        return recipe

@@ -52,8 +52,8 @@ class RecipesView(View):
             recipe.description = (
                 data["description"] if "description" in data else recipe.description
             )
-            recipe.ingredients.clear()
             if "ingredients" in data:
+                recipe.ingredients.clear()
                 self._add_ingridients(recipe, data)
             recipe.save()
             return JsonResponse(recipe.to_dict(), status=200)

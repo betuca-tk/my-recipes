@@ -19,13 +19,13 @@ class RecipesView(View):
 
     def _load_by_id(self, recipe_id):
         try:
-            recipe = models.Recipe.objects.get(id=recipe_id)
+            recipe = models.Recipe.objects.prefetch_related('ingredients').get(id=recipe_id)
             return recipe.to_dict()
         except models.Recipe.DoesNotExist:
             raise Http404("Recipe not found")
 
     def _load_all_recipes(self):
-        recipes = models.Recipe.objects.all()
+        recipes = models.Recipe.objects.prefetch_related('ingredients').all()
         recipes_result = [recipe.to_dict() for recipe in recipes]
         return recipes_result
 
@@ -39,15 +39,12 @@ class RecipesView(View):
         recipe = models.Recipe.objects.create(
             name=data["name"], description=data["description"]
         )
-        self._add_ingridients(recipe, data)
+        self._create_ingridients(recipe, data)
         return JsonResponse(recipe.to_dict(), status=201)
 
     def delete(self, request, recipe_id):
         try:
             recipe = models.Recipe.objects.get(id=recipe_id)
-            if recipe.ingredients:
-                for ingredient in recipe.ingredients.all():
-                    ingredient.delete()
             recipe.delete()
             return HttpResponse(status=204)
         except models.Recipe.DoesNotExist:
@@ -61,16 +58,17 @@ class RecipesView(View):
             recipe.description = (
                 data["description"] if "description" in data else recipe.description
             )
-            if "ingredients" in data:
-                recipe.ingredients.clear()
-                self._add_ingridients(recipe, data)
             recipe.save()
+            if "ingredients" in data:
+                recipe.ingredients.all().delete()
+                self._create_ingridients(recipe, data)
             return JsonResponse(recipe.to_dict(), status=200)
         except models.Recipe.DoesNotExist:
             raise Http404("Recipe not found")
 
-    def _add_ingridients(self, recipe, data):
+    def _create_ingridients(self, recipe, data):
         for ingredient in data["ingredients"]:
-            ingredient = models.Ingredient.objects.create(name=ingredient["name"])
-            recipe.ingredients.add(ingredient)
+            ingredient = models.Ingredient.objects.create(
+                name=ingredient["name"], recipe=recipe
+            )
         return recipe

@@ -13,23 +13,23 @@ class RecipeTest(TestCase):
             name="Frist Recipe",
             description="First Recipe description",
         )
-        self.ingredient_one = Ingredient.objects.create(name="Some ingredient")
-        self.ingredient_two = Ingredient.objects.create(name="Some other ingredient")
-        self.recipe_one.ingredients.add(self.ingredient_one)
-        self.recipe_one.ingredients.add(self.ingredient_two)
+        self.ingredient_one = Ingredient.objects.create(
+            name="Some ingredient", recipe=self.recipe_one
+        )
+        self.ingredient_two = Ingredient.objects.create(
+            name="Some other ingredient", recipe=self.recipe_one
+        )
 
         self.recipe_two = Recipe.objects.create(
             name="Second Recipe",
             description="Second Recipe description",
         )
         self.ingredient_three = Ingredient.objects.create(
-            name="Some really important ingredient"
+            name="Some really important ingredient", recipe=self.recipe_two
         )
         self.ingredient_four = Ingredient.objects.create(
-            name="Some not so important one"
+            name="Some not so important one", recipe=self.recipe_two
         )
-        self.recipe_two.ingredients.add(self.ingredient_three)
-        self.recipe_two.ingredients.add(self.ingredient_four)
 
     def test_create_recipe_response(self):
         """
@@ -43,7 +43,6 @@ class RecipeTest(TestCase):
                 {"name": "Ingredient created 2"},
             ],
         }
-
         response = self.client.post(
             "/recipes/", json.dumps(posta_data), content_type="application/json"
         )

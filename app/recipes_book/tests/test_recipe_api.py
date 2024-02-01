@@ -171,7 +171,7 @@ class RecipeTest(TestCase):
             Recipe.objects.get(name=self.recipe_one.name)
 
         with self.assertRaises(Ingredient.DoesNotExist):
-            Ingredient.objects.get(name=self.ingredient_two.name)
+            Ingredient.objects.get(name=self.ingredient_one.name)
 
         with self.assertRaises(Ingredient.DoesNotExist):
             Ingredient.objects.get(name=self.ingredient_two.name)
@@ -189,3 +189,36 @@ class RecipeTest(TestCase):
         recipe2_data = response_data[0]
         self.assertEqual(recipe2_data["name"], self.recipe_two.name)
         self.assertEqual(recipe2_data["description"], self.recipe_two.description)
+
+    def test_create_recipe_missing_name(self):
+        """
+        Test POST response for recipe creation with missing name
+        """
+        posta_data = {
+            "description": "Recipe description",
+            "ingredients": [
+                {"name": "Ingredient 1"},
+                {"name": "Ingredient 2"},
+            ],
+        }
+        response = self.client.post(
+            "/recipes/", json.dumps(posta_data), content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 400)
+
+    def test_create_recipe_missing_description(self):
+        """
+        Test POST response for recipe creation with missing description
+        """
+        posta_data = {
+            "name": "Recipe Name",
+            "ingredients": [
+                {"name": "Ingredient 1"},
+                {"name": "Ingredient 2"},
+            ],
+        }
+        response = self.client.post(
+            "/recipes/", json.dumps(posta_data), content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 400)
+

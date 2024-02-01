@@ -19,13 +19,15 @@ class RecipesView(View):
 
     def _load_by_id(self, recipe_id):
         try:
-            recipe = models.Recipe.objects.prefetch_related('ingredients').get(id=recipe_id)
+            recipe = models.Recipe.objects.prefetch_related("ingredients").get(
+                id=recipe_id
+            )
             return recipe.to_dict()
         except models.Recipe.DoesNotExist:
             raise Http404("Recipe not found")
 
     def _load_all_recipes(self):
-        recipes = models.Recipe.objects.prefetch_related('ingredients').all()
+        recipes = models.Recipe.objects.prefetch_related("ingredients").all()
         recipes_result = [recipe.to_dict() for recipe in recipes]
         return recipes_result
 
@@ -36,11 +38,18 @@ class RecipesView(View):
 
     def post(self, request):
         data = json.loads(request.body)
+
+        if not self._validate_mandatory_fields(data):
+            return HttpResponse(status=400)
+
         recipe = models.Recipe.objects.create(
             name=data["name"], description=data["description"]
         )
         self._create_ingridients(recipe, data)
         return JsonResponse(recipe.to_dict(), status=201)
+
+    def _validate_mandatory_fields(self, data):
+        return "name" in data and "description" in data
 
     def delete(self, request, recipe_id):
         try:

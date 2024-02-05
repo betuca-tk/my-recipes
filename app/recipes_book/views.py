@@ -2,6 +2,7 @@ from . import models
 from django.http import JsonResponse, Http404, HttpResponse
 from django.views import View
 from django.shortcuts import get_object_or_404
+from django.db import transaction
 
 import json
 
@@ -73,8 +74,9 @@ class RecipesView(View):
             raise Http404("Recipe not found")
 
     def _create_ingridients(self, recipe, data):
-        for ingredient in data["ingredients"]:
-            ingredient = models.Ingredient.objects.create(
-                name=ingredient["name"], recipe=recipe
-            )
-        return recipe
+        ingredients_to_create = [
+            models.Ingredient(name=ingredient["name"], recipe=recipe)
+            for ingredient in data["ingredients"]
+        ]
+        with transaction.atomic():
+            models.Ingredient.objects.bulk_create(ingredients_to_create)

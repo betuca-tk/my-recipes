@@ -1,6 +1,8 @@
 from . import models
 from django.http import JsonResponse, Http404, HttpResponse
 from django.views import View
+from django.shortcuts import get_object_or_404
+
 import json
 
 
@@ -18,13 +20,8 @@ class RecipesView(View):
             return JsonResponse(recipes, safe=False)
 
     def _load_by_id(self, recipe_id):
-        try:
-            recipe = models.Recipe.objects.prefetch_related("ingredients").get(
-                id=recipe_id
-            )
-            return recipe.to_dict()
-        except models.Recipe.DoesNotExist:
-            raise Http404("Recipe not found")
+        recipe = get_object_or_404(models.Recipe.objects.prefetch_related("ingredients"), id=recipe_id)
+        return recipe.to_dict()
 
     def _load_all_recipes(self):
         recipes = models.Recipe.objects.prefetch_related("ingredients").all()

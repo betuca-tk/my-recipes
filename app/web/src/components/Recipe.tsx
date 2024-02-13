@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import './Recipe.css';
 
 export interface RecipeProps {
   id: string;
@@ -10,13 +11,13 @@ export interface RecipeProps {
 class Recipe extends Component<RecipeProps> {
   render() {
     return (
-      <div key={this.props.id}>
+      <div key={this.props.id} className="Recipe">
         <h2>{this.props.name}</h2>
         <p>{this.props.description}</p>
         <ul>
-        {this.props.ingredients.map((ingredient, index) => {
-          return <li key={index}>{ingredient}</li>
-        })}
+          {this.props.ingredients.map((ingredient, index) => {
+            return <li key={index}>{ingredient}</li>
+          })}
         </ul>
       </div>
     )

@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React from "react"
 import RecipesList from './RecipesList.tsx';
 import { RecipeProps } from "./Recipe.tsx";
 
@@ -8,7 +8,7 @@ const DEFAULT_RECIPES: RecipeProps[] = [
         name: "Spaghetti",
         description: "A simple recipe for spaghetti",
         ingredients: ["spaghetti", "tomato sauce", "meatballs"]
-    }, 
+    },
     {
         id: "2",
         name: "Tacos",
@@ -24,15 +24,13 @@ const DEFAULT_RECIPES: RecipeProps[] = [
 ];
 
 
-class RecipesBook extends Component {
-    render() {
-        return (
-            <div>
-                <h1>Recipes Book</h1>
-                <RecipesList recipes={DEFAULT_RECIPES}/>
-            </div>
-        )
-    }
+const RecipesBook = () => {
+    return (
+        <div>
+            <h1>Recipes Book</h1>
+            <RecipesList recipes={DEFAULT_RECIPES} />
+        </div>
+    )
 }
 
 export default RecipesBook

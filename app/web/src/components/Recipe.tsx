@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React from "react"
 import './Recipe.css';
 
 export interface RecipeProps {
@@ -8,20 +8,18 @@ export interface RecipeProps {
   ingredients: string[];
 }
 
-class Recipe extends Component<RecipeProps> {
-  render() {
-    return (
-      <div key={this.props.id} className="Recipe">
-        <h2>{this.props.name}</h2>
-        <p>{this.props.description}</p>
-        <ul>
-          {this.props.ingredients.map((ingredient, index) => {
-            return <li key={index}>{ingredient}</li>
-          })}
-        </ul>
-      </div>
-    )
-  }
+const Recipe = (props: RecipeProps) => {
+  return (
+    <div key={props.id} className="Recipe">
+      <h2>{props.name}</h2>
+      <p>{props.description}</p>
+      <ul>
+        {props.ingredients.map((ingredient, index) => {
+          return <li key={index}>{ingredient}</li>
+        })}
+      </ul>
+    </div>
+  )
 }
 
 export default Recipe

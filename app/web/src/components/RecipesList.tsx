@@ -1,8 +1,9 @@
 import React from "react"
 import Recipe, { RecipeProps } from "./Recipe.tsx"
+import { RecipeType } from "../context/types.tsx";
 
 interface RecipesListProps {
-  recipes: RecipeProps[];
+  recipes: RecipeType[];
 }
 
 const RecipesList = (props: RecipesListProps) => {

@@ -1,5 +1,5 @@
 import React from "react"
-import './Recipe.css';
+import './RecipeItem.css';
 import { RecipeType } from "../context/types";
 
 export interface RecipeProps {
@@ -9,7 +9,7 @@ export interface RecipeProps {
   ingredients: string[];
 }
 
-const Recipe = (props: RecipeType) => {
+const RecipeItem = (props: RecipeType) => {
   return (
     <div key={props.id} className="Recipe">
       <h2>{props.name}</h2>
@@ -23,4 +23,4 @@ const Recipe = (props: RecipeType) => {
   )
 }
 
-export default Recipe
+export default RecipeItem

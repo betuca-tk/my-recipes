@@ -1,6 +1,5 @@
 import React, { useEffect, useReducer } from "react"
 import RecipesList from './RecipesList.tsx';
-import { RecipeProps } from "./Recipe.tsx";
 import recipeReducer from "../context/recipeReducer.tsx";
 import { RecipeType } from "../context/types.tsx";
 import { getRecipes } from "../context/RecipesService.tsx";

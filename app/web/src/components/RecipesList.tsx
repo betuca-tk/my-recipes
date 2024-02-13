@@ -1,5 +1,5 @@
 import React from "react"
-import Recipe, { RecipeProps } from "./Recipe.tsx"
+import RecipeItem from "./RecipeItem.tsx"
 import { RecipeType } from "../context/types.tsx";
 
 interface RecipesListProps {
@@ -11,7 +11,7 @@ const RecipesList = (props: RecipesListProps) => {
     <div>
       <h1>Recipes</h1>
       {props.recipes.map((recipe) =>
-        <Recipe key={recipe.id} {...recipe} />
+        <RecipeItem key={recipe.id} {...recipe} />
       )}
     </div>
   )

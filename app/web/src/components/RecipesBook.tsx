@@ -1,10 +1,10 @@
 import React, { useEffect, useReducer } from "react"
 import RecipesList from './RecipesList.tsx';
 import recipeReducer from "../context/recipeReducer.tsx";
-import { RecipeType } from "../context/types.tsx";
+import { Recipe } from "../context/types.tsx";
 import { getRecipes } from "../context/RecipesService.tsx";
 
-const DEFAULT_RECIPES: RecipeType[] = [
+const DEFAULT_RECIPES: Recipe[] = [
     {
         id: 1,
         name: "Spaghetti",

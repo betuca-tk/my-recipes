@@ -1,7 +1,7 @@
-import { RecipeType, RecipeAction } from './types';
+import { Recipe, RecipeAction } from './types';
 
 
-const recipeReducer = (state: RecipeType[], action: RecipeAction): RecipeType[] =>{
+const recipeReducer = (state: Recipe[], action: RecipeAction): Recipe[] =>{
     switch (action.type) {
         case 'FETCH_RECIPES':
             return action.payload;

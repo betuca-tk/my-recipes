@@ -1,16 +1,32 @@
-import React from "react"
+import React, { useReducer } from "react"
 import './RecipeAddForm.css';
 import useInputState from "../hooks/useInputState";
+import recipeReducer from "../context/recipeReducer.tsx";
 import { Link } from 'react-router-dom';
+import { addRecipe } from "../context/RecipesService.tsx";
+import { RecipeActionTypes } from "../context/types.tsx";
 
 const RecipeAddForm = () => {
 
     const [name, handleNameChange] = useInputState("");
     const [description, handleDescriptionChange] = useInputState("");
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const [recipes, dispatch] = useReducer(recipeReducer, []);
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         console.log("submitting form values: ", name, " - ", description)
+        try {
+            let payload = await addRecipe({
+                name: name,
+                description: description,
+                ingredients: []
+            })
+            dispatch({ type: RecipeActionTypes.ADD_RECIPE, payload: payload });
+        } catch (error) {
+            dispatch({ type: RecipeActionTypes.ERROR, payload: "Something went wrong" });
+        }
+
     }
 
     return (<div className="RecipeAddForm">

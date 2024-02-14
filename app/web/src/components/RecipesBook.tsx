@@ -5,28 +5,6 @@ import { Recipe } from "../context/types.tsx";
 import { getRecipes } from "../context/RecipesService.tsx";
 import { Link } from 'react-router-dom';
 
-const DEFAULT_RECIPES: Recipe[] = [
-    {
-        id: 1,
-        name: "Spaghetti",
-        description: "A simple recipe for spaghetti"
-        // ingredients: ["spaghetti", "tomato sauce", "meatballs"]
-    },
-    {
-        id: 2,
-        name: "Tacos",
-        description: "A simple recipe for tacos"
-        // ingredients: ["tortillas", "ground beef", "lettuce", "tomato", "cheese"]
-    },
-    {
-        id: 3,
-        name: "Pizza",
-        description: "A simple recipe for pizza"
-        // ingredients: ["dough", "tomato sauce", "cheese", "pepperoni"]
-    }
-];
-
-
 const RecipesBook = () => {
     const [recipes, dispatch] = useReducer(recipeReducer, []);
 

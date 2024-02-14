@@ -1,7 +1,7 @@
 import React, { useEffect, useReducer } from "react"
 import RecipesList from './RecipesList.tsx';
 import recipeReducer from "../context/recipeReducer.tsx";
-import { Recipe } from "../context/types.tsx";
+import { RecipeActionTypes } from "../context/types.tsx";
 import { getRecipes } from "../context/RecipesService.tsx";
 import { Link } from 'react-router-dom';
 
@@ -12,9 +12,9 @@ const RecipesBook = () => {
         const fetchRecipes = async () => {
             try {
                 let payload = await getRecipes()
-                dispatch({ type: 'FETCH_RECIPES', payload: payload });
+                dispatch({ type: RecipeActionTypes.FETCH_RECIPES, payload: payload });
             } catch (error) {
-                dispatch({ type: 'ERROR', payload: "Something went wrong" });
+                dispatch({ type: RecipeActionTypes.ERROR, payload: "Something went wrong" });
             }
         };
 

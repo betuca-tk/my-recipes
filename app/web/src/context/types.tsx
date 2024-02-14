@@ -5,6 +5,13 @@ export interface Recipe {
     description: string;
 }
 
+export enum RecipeActionTypes {
+    FETCH_RECIPES = 'FETCH_RECIPES',
+    ADD_RECIPE = 'ADD_RECIPE',
+    ERROR = 'ERROR'
+}
+
 export type RecipeAction =
-    | { type: 'FETCH_RECIPES'; payload: Recipe[] }
-    | { type: 'ERROR'; payload: any };
+    | { type: RecipeActionTypes.FETCH_RECIPES; payload: Recipe[] }
+    | { type: RecipeActionTypes.ADD_RECIPE; payload: Recipe }
+    | { type: RecipeActionTypes.ERROR; payload: any };

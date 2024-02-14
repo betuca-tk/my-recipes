@@ -5,6 +5,8 @@ const recipeReducer = (state: Recipe[], action: RecipeAction): Recipe[] =>{
     switch (action.type) {
         case 'FETCH_RECIPES':
             return action.payload;
+        case 'ADD_RECIPE':
+            return [...state, action.payload];
         case 'ERROR':
             console.error('Error:', action.payload);
             return state;

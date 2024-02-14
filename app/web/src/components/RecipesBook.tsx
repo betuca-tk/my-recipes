@@ -3,6 +3,7 @@ import RecipesList from './RecipesList.tsx';
 import recipeReducer from "../context/recipeReducer.tsx";
 import { Recipe } from "../context/types.tsx";
 import { getRecipes } from "../context/RecipesService.tsx";
+import { Link } from 'react-router-dom';
 
 const DEFAULT_RECIPES: Recipe[] = [
     {
@@ -42,10 +43,10 @@ const RecipesBook = () => {
         fetchRecipes();
     }, []);
 
-
     return (
         <div>
             <h1>Recipes Book</h1>
+            <Link to="/add"><button>Add Recipe</button></Link>
             <RecipesList recipes={recipes} />
         </div>
     )

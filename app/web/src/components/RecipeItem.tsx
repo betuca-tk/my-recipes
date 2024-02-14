@@ -1,15 +1,8 @@
 import React from "react"
 import './RecipeItem.css';
-import { RecipeType } from "../context/types";
+import { Recipe } from "../context/types";
 
-export interface RecipeProps {
-  id: string;
-  name: string;
-  description: string;
-  ingredients: string[];
-}
-
-const RecipeItem = (props: RecipeType) => {
+const RecipeItem = (props: Recipe) => {
   return (
     <div key={props.id} className="Recipe">
       <h2>{props.name}</h2>
@@ -19,7 +12,7 @@ const RecipeItem = (props: RecipeType) => {
           return <li key={index}>{ingredient}</li>
         })}
       </ul> */}
-    </div>
+    </div >
   )
 }
 

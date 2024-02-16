@@ -7,6 +7,8 @@ const recipeReducer = (state: Recipe[], action: RecipeAction): Recipe[] =>{
             return action.payload;
         case 'ADD_RECIPE':
             return [...state, action.payload];
+        case 'DELETE_RECIPE':
+            return state.filter((recipe) => recipe.id !== action.id);
         case 'ERROR':
             console.error('Error:', action.payload);
             return state;

@@ -1,12 +1,12 @@
-import React, { useEffect, useReducer } from "react"
+import React, { useEffect, useReducer, useContext } from "react"
 import RecipesList from './RecipesList.tsx';
-import recipeReducer from "../context/recipeReducer.tsx";
 import { RecipeActionTypes } from "../context/types.tsx";
 import { getRecipes } from "../context/RecipesService.tsx";
 import { Link } from 'react-router-dom';
+import { RecipeContext } from '../context/RecipeContext.tsx';
 
 const RecipesBook = () => {
-    const [recipes, dispatch] = useReducer(recipeReducer, []);
+    const { recipes, dispatch } = useContext(RecipeContext);
 
     useEffect(() => {
         const fetchRecipes = async () => {
@@ -17,7 +17,6 @@ const RecipesBook = () => {
                 dispatch({ type: RecipeActionTypes.ERROR, payload: "Something went wrong" });
             }
         };
-
         fetchRecipes();
     }, []);
 

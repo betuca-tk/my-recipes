@@ -1,15 +1,18 @@
 import './App.css';
 import RecipesBook from './components/RecipesBook.tsx';
 import RecipeAddForm from './components/RecipeAddForm.tsx';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
+import { RecipeProvider } from './context/RecipeContext.tsx';
 
 function App() {
   return (
     <div className="App">
-      <Switch>
-        <Route exact path="/add" component={RecipeAddForm} />
-        <Route exact path="/" component={RecipesBook} />
-      </Switch>
+      <RecipeProvider>
+        <Switch>
+          <Route exact path="/add" component={RecipeAddForm} />
+          <Route exact path="/" component={RecipesBook} />
+        </Switch>
+      </RecipeProvider>
     </div>
   );
 }

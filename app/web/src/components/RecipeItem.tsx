@@ -7,11 +7,13 @@ const RecipeItem = (props: Recipe) => {
     <div key={props.id} className="Recipe">
       <h2>{props.name}</h2>
       <p>{props.description}</p>
-      {/* <ul>
-        {props.ingredients.map((ingredient, index) => {
-          return <li key={index}>{ingredient}</li>
-        })}
-      </ul> */}
+      {props.ingredients && (
+        <ul>
+          {props.ingredients.map((ingredient, index) =>
+            <li key={index}>{ingredient.name}</li>
+          )}
+        </ul>
+      )}
     </div >
   )
 }

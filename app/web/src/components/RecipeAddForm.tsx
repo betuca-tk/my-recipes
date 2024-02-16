@@ -1,11 +1,11 @@
-import React, { useReducer } from "react"
+import React, { useContext } from "react"
 import './RecipeAddForm.css';
 import useRecipeState from "../hooks/useRecipeState.tsx";
-import recipeReducer from "../context/recipeReducer.tsx";
 import { Link } from 'react-router-dom';
 import { addRecipe } from "../context/RecipesService.tsx";
 import { RecipeActionTypes } from "../context/types.tsx";
 import { withRouter, RouteComponentProps } from "react-router-dom"
+import { RecipeContext } from "../context/RecipeContext.tsx";
 
 interface RecipeFormProps extends RouteComponentProps {}
 
@@ -21,7 +21,7 @@ const RecipeAddForm: React.FC<RecipeFormProps> = ({ history }) => {
         reset
     } = useRecipeState();
 
-    const [recipes, dispatch] = useReducer(recipeReducer, []);
+    const { dispatch } = useContext(RecipeContext);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -59,7 +59,7 @@ const RecipeAddForm: React.FC<RecipeFormProps> = ({ history }) => {
                 ))}
             </div>
             <div>
-                <button type="button" onClick={() => addIngredient("")}>Add Ingredient</button>
+                <button type="button" onClick={() => addIngredient()}>Add Ingredient</button>
             </div>
             <button type="submit">add</button>
             <Link to="/"><button>back to home</button></Link>

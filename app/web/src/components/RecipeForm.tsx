@@ -6,6 +6,14 @@ import { addRecipe, getRecipe, updateRecipe } from "../context/RecipesService.ts
 import { RecipeActionTypes } from "../context/types.tsx";
 import { withRouter, RouteComponentProps } from "react-router-dom"
 import { RecipeContext } from "../context/RecipeContext.tsx";
+import styled from 'styled-components';
+
+const RecipeFormContainer = styled.div`
+    margin: 10px auto;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 13px
+    border: 1px solid #ccc;
+    `;
 
 interface RecipeFormProps extends RouteComponentProps { }
 
@@ -41,7 +49,7 @@ const RecipeForm: React.FC<RecipeFormProps> = (props) => {
         }
     }, []);
 
-    
+
     const { dispatch } = useContext(RecipeContext);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -63,34 +71,35 @@ const RecipeForm: React.FC<RecipeFormProps> = (props) => {
         }
     }
 
-    return (<div className="RecipeAddForm">
-        <form onSubmit={(e) => handleSubmit(e)}>
-            <div>
-                {props.actionType === RecipeActionTypes.ADD_RECIPE ? <h1>Add new Recipe</h1> : <h1>Edit Recipe</h1>}
-                <label htmlFor="name">Name</label>
-                <input id="name" value={recipe.name} onChange={(e) => setName(e.target.value)} type="text" />
-                <label htmlFor="description">Description</label>
-                <input id="description" type="text" value={recipe.description} onChange={(e) => setDescription(e.target.value)} />
-                {recipe.ingredients && recipe.ingredients.map((ingredient, index) => (
-                    <div key={index}>
-                        <label htmlFor={`ingredient${index}`}>Ingredient</label>
-                        <input
-                            id={`ingredient${index}`}
-                            value={ingredient.name}
-                            type="text"
-                            onChange={(e) => updateIngredient(index, e)}
-                        />
-                        <button onClick={() => removeIngredient(index)}>(X)</button>
-                    </div>
-                ))}
-            </div>
-            <div>
-                <button type="button" onClick={() => addIngredient()}>Add Ingredient</button>
-            </div>
-            <button type="submit">add</button>
-            <Link to="/"><button>back to home</button></Link>
-        </form>
-    </div>
+    return (
+        <RecipeFormContainer>
+            <form onSubmit={(e) => handleSubmit(e)}>
+                <div>
+                    {props.actionType === RecipeActionTypes.ADD_RECIPE ? <h1>Add new Recipe</h1> : <h1>Edit Recipe</h1>}
+                    <label htmlFor="name">Name</label>
+                    <input id="name" value={recipe.name} onChange={(e) => setName(e.target.value)} type="text" />
+                    <label htmlFor="description">Description</label>
+                    <input id="description" type="text" value={recipe.description} onChange={(e) => setDescription(e.target.value)} />
+                    {recipe.ingredients && recipe.ingredients.map((ingredient, index) => (
+                        <div key={index}>
+                            <label htmlFor={`ingredient${index}`}>Ingredient</label>
+                            <input
+                                id={`ingredient${index}`}
+                                value={ingredient.name}
+                                type="text"
+                                onChange={(e) => updateIngredient(index, e)}
+                            />
+                            <button onClick={() => removeIngredient(index)}>(X)</button>
+                        </div>
+                    ))}
+                </div>
+                <div>
+                    <button type="button" onClick={() => addIngredient()}>Add Ingredient</button>
+                </div>
+                <button type="submit">add</button>
+                <Link to="/"><button>back to home</button></Link>
+            </form>
+        </RecipeFormContainer>
     )
 }
 

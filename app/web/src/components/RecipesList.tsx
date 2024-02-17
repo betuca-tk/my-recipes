@@ -4,6 +4,25 @@ import { Recipe, RecipeActionTypes } from "../context/types.tsx";
 import { removeRecipe } from "../context/RecipesService.tsx";
 import { RecipeContext } from "../context/RecipeContext.tsx";
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { StyledLink } from "./Styles.tsx";
+
+const RecipesListContainer = styled.div`
+    margin: 10px auto;
+    font-size: 15px;
+    border: 1px solid #eeeeee;
+    background-color: #f9f9f9;
+    padding: 30px;
+`;
+const RecipesListSubContainer = styled.div`
+    padding: 2px 2px 43px 2px;
+    border: 1px solid #eeeeee;
+    margin-bottom: 10px;
+`;
+const StyledLinkRemove = styled(StyledLink)`
+    padding: 8px 16px;
+`;
+
 
 interface RecipesListProps {
   recipes: Recipe[];
@@ -25,15 +44,18 @@ const RecipesList = (props: RecipesListProps) => {
   }
 
   return (
-    <div>
+    <RecipesListContainer>
       {props.recipes.map((recipe) =>
-        <div key={recipe.id} >
+        <RecipesListSubContainer key={recipe.id} >
           <RecipeItem {...recipe} />
-          <button onClick={() => handleDelete(recipe.id)}>(X)</button>
-          <Link to={`/update/${recipe.id}`}>Edit Recipe</Link>
-        </div>
+          <StyledLinkRemove>
+            <label onClick={() => handleDelete(recipe.id)}>Delete</label>
+          </StyledLinkRemove>
+          <StyledLinkRemove to={`/update/${recipe.id}`}>Edit</StyledLinkRemove>
+
+        </RecipesListSubContainer>
       )}
-    </div>
+    </RecipesListContainer>
   )
 }
 

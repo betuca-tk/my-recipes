@@ -24,10 +24,6 @@ const RecipesList = (props: RecipesListProps) => {
 
   }
 
-  const editRecipe = (id: number) => {
-    console.log("editRecipe: ", id)
-  }
-
   return (
     <div>
       {props.recipes.map((recipe) =>

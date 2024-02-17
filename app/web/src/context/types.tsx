@@ -13,6 +13,7 @@ export interface Recipe {
 export enum RecipeActionTypes {
     FETCH_RECIPES = 'FETCH_RECIPES',
     ADD_RECIPE = 'ADD_RECIPE',
+    UPDATE_RECIPE = 'UPDATE_RECIPE',
     DELETE_RECIPE = 'DELETE_RECIPE',
     ERROR = 'ERROR'
 }
@@ -20,5 +21,6 @@ export enum RecipeActionTypes {
 export type RecipeAction =
     | { type: RecipeActionTypes.FETCH_RECIPES; payload: Recipe[] }
     | { type: RecipeActionTypes.ADD_RECIPE; payload: Recipe }
+    | { type: RecipeActionTypes.UPDATE_RECIPE; payload: Recipe }
     | { type: RecipeActionTypes.DELETE_RECIPE; id: number }
     | { type: RecipeActionTypes.ERROR; payload: any };

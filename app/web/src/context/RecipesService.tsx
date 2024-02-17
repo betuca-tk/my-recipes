@@ -16,10 +16,32 @@ export async function getRecipes(): Promise<Recipe[]> {
   }
 }
 
+export async function getRecipe(id: string): Promise<Recipe> {
+  try {
+    console.log("Fetching recipe from API with id: ", id);
+    const { data } = await axios.get(`${RECIPES_API_URL}${id}/`);
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
 export async function addRecipe(recipe: Recipe): Promise<Recipe> {
   try {
     console.log("Adding recipe to API with data: ", recipe);
     const { data } = await axios.post(RECIPES_API_URL, recipe);
+    return data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export async function updateRecipe(recipe: Recipe): Promise<Recipe> {
+  try {
+    console.log("Updating recipe in API with data: ", recipe);
+    const { data } = await axios.patch(`${RECIPES_API_URL}${recipe.id}/`, recipe);
     return data;
   } catch (error) {
     console.error(error);

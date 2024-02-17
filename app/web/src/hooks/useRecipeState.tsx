@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { Recipe } from "../context/types";
 
-const BLANK_RECIPE: Recipe = { name: "", description: "", ingredients: [] };
-
 interface RecipeStateHookResult {
   recipe: Recipe;
+  setRecipe: (recipe: Recipe) => void;
   setName: (name: string) => void;
   setDescription: (description: string) => void;
   addIngredient: () => void;
@@ -16,27 +15,31 @@ interface RecipeStateHookResult {
   reset: () => void;
 }
 
-export default (): RecipeStateHookResult => {
-  const BLANK_RECIPE: Recipe = { name: "", description: "", ingredients: [] };
+const BLANK_RECIPE: Recipe = { name: "", description: "", ingredients: [] };
 
-  const [recipe, setRecipe] = useState(BLANK_RECIPE);
+export default (): RecipeStateHookResult => {
+
+  const [recipe, setState] = useState(BLANK_RECIPE);
+  const setRecipe = (recipe: Recipe) => {
+    setState(recipe);
+  }
   const setName = (name: string) => {
-    setRecipe({ ...recipe, name });
+    setState({ ...recipe, name });
   };
   const setDescription = (description: string) => {
-    setRecipe({ ...recipe, description });
+    setState({ ...recipe, description });
   };
   const reset = () => {
-    setRecipe(BLANK_RECIPE);
+    setState(BLANK_RECIPE);
   };
   const addIngredient = () => {
-    setRecipe((prevRecipe) => ({
+    setState((prevRecipe) => ({
       ...prevRecipe,
       ingredients: [...(prevRecipe.ingredients || []), { name: "" }],
     }));
   };
   const removeIngredient = (index: number) => {
-    setRecipe((prevRecipe) => {
+    setState((prevRecipe) => {
       const newIngredients = [...(prevRecipe.ingredients ?? [])];
       newIngredients.splice(index, 1);
       return {
@@ -51,10 +54,10 @@ export default (): RecipeStateHookResult => {
   ) => {
     const newIngredients = [...(recipe.ingredients ?? [])];
     newIngredients[index].name = event.target.value;
-    setRecipe((prevRecipe) => ({
+    setState((prevRecipe) => ({
       ...prevRecipe,
       ingredients: newIngredients,
     }));
   };
-  return { recipe, setName, setDescription, addIngredient, removeIngredient, updateIngredient, reset };
+  return { recipe, setRecipe, setName, setDescription, addIngredient, removeIngredient, updateIngredient, reset };
 };

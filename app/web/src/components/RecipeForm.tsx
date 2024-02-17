@@ -1,18 +1,23 @@
-import React, { useContext } from "react"
-import './RecipeAddForm.css';
+import React, { useContext, useEffect } from "react"
+import './RecipeForm.css';
 import useRecipeState from "../hooks/useRecipeState.tsx";
-import { Link } from 'react-router-dom';
-import { addRecipe } from "../context/RecipesService.tsx";
+import { Link, useParams } from 'react-router-dom';
+import { addRecipe, getRecipe, updateRecipe } from "../context/RecipesService.tsx";
 import { RecipeActionTypes } from "../context/types.tsx";
 import { withRouter, RouteComponentProps } from "react-router-dom"
 import { RecipeContext } from "../context/RecipeContext.tsx";
 
-interface RecipeFormProps extends RouteComponentProps {}
+interface RecipeFormProps extends RouteComponentProps { }
 
-const RecipeAddForm: React.FC<RecipeFormProps> = ({ history }) => {
+const RecipeForm: React.FC<RecipeFormProps> = (props) => {
+
+    const { id } = useParams()
+
+    console.log("(RecipeForm) props: ", props)
 
     const {
         recipe,
+        setRecipe,
         setName,
         setDescription,
         addIngredient,
@@ -21,16 +26,37 @@ const RecipeAddForm: React.FC<RecipeFormProps> = ({ history }) => {
         reset
     } = useRecipeState();
 
+    useEffect(() => {
+        const fetchRecipe = async (id) => {
+            try {
+                let payload = await getRecipe(id)
+                console.log("(RecipeForm) payload: ", payload)
+                setRecipe(payload);
+            } catch (error) {
+                dispatch({ type: RecipeActionTypes.ERROR, payload: "Something went wrong" });
+            }
+        };
+        if (id) {
+            fetchRecipe(id);
+        }
+    }, []);
+
+    
     const { dispatch } = useContext(RecipeContext);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         console.log("(on submit) recipe: ", recipe)
         try {
-            let payload = await addRecipe(recipe)
-            dispatch({ type: RecipeActionTypes.ADD_RECIPE, payload: payload });
+            let payload
+            if (props.actionType === RecipeActionTypes.ADD_RECIPE) {
+                payload = await addRecipe(recipe)
+            } else {
+                payload = await updateRecipe(recipe)
+            }
+            dispatch({ type: props.actionType, payload: payload });
             reset();
-            history.push("/");
+            props.history.push("/");
 
         } catch (error) {
             dispatch({ type: RecipeActionTypes.ERROR, payload: "Something went wrong" });
@@ -40,7 +66,7 @@ const RecipeAddForm: React.FC<RecipeFormProps> = ({ history }) => {
     return (<div className="RecipeAddForm">
         <form onSubmit={(e) => handleSubmit(e)}>
             <div>
-                <h1>Add new Recipe</h1>
+                {props.actionType === RecipeActionTypes.ADD_RECIPE ? <h1>Add new Recipe</h1> : <h1>Edit Recipe</h1>}
                 <label htmlFor="name">Name</label>
                 <input id="name" value={recipe.name} onChange={(e) => setName(e.target.value)} type="text" />
                 <label htmlFor="description">Description</label>
@@ -68,4 +94,4 @@ const RecipeAddForm: React.FC<RecipeFormProps> = ({ history }) => {
     )
 }
 
-export default withRouter(RecipeAddForm)
+export default withRouter(RecipeForm)

@@ -3,6 +3,7 @@ import RecipeItem from "./RecipeItem.tsx"
 import { Recipe, RecipeActionTypes } from "../context/types.tsx";
 import { removeRecipe } from "../context/RecipesService.tsx";
 import { RecipeContext } from "../context/RecipeContext.tsx";
+import { Link } from 'react-router-dom';
 
 interface RecipesListProps {
   recipes: Recipe[];
@@ -30,11 +31,11 @@ const RecipesList = (props: RecipesListProps) => {
   return (
     <div>
       {props.recipes.map((recipe) =>
-        <>
-          <RecipeItem key={recipe.id} {...recipe} />
+        <div key={recipe.id} >
+          <RecipeItem {...recipe} />
           <button onClick={() => handleDelete(recipe.id)}>(X)</button>
-          <button onClick={() => editRecipe(recipe.id)}>(Edit)</button>
-        </>
+          <Link to={`/update/${recipe.id}`}>Edit Recipe</Link>
+        </div>
       )}
     </div>
   )

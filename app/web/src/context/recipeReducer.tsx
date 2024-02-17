@@ -7,6 +7,17 @@ const recipeReducer = (state: Recipe[], action: RecipeAction): Recipe[] =>{
             return action.payload;
         case 'ADD_RECIPE':
             return [...state, action.payload];
+        case 'UPDATE_RECIPE':
+            return state.map((recipe) => {
+                if (recipe.id === action.payload.id) {
+                    return {
+                        ...recipe,
+                        ...action.payload
+                    };
+                } else {
+                    return recipe;
+                }
+            });
         case 'DELETE_RECIPE':
             return state.filter((recipe) => recipe.id !== action.id);
         case 'ERROR':

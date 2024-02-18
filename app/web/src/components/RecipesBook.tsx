@@ -13,9 +13,9 @@ const RecipesBook = () => {
         const fetchRecipes = async () => {
             try {
                 let payload = await getRecipes()
-                dispatch({ type: RecipeActionTypes.FETCH_RECIPES, payload: payload });
+                // dispatch({ type: RecipeActionTypes.FETCH_RECIPES, payload: payload });
             } catch (error) {
-                dispatch({ type: RecipeActionTypes.ERROR, payload: "Something went wrong" });
+                // dispatch({ type: RecipeActionTypes.ERROR, payload: "Something went wrong" });
             }
         };
         fetchRecipes();

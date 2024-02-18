@@ -50,7 +50,7 @@ const RecipeForm: React.FC<RecipeFormProps> = (props) => {
         if (id) {
             fetchRecipe(id);
         }
-    }, [dispatch, id, setRecipe]);
+    }, [dispatch, id]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()

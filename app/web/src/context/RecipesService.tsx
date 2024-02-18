@@ -18,6 +18,7 @@ export async function getRecipes(): Promise<Recipe[]> {
 
 export async function getRecipe(id: string): Promise<Recipe> {
   try {
+    console.log("(on service) getRecipe: id: " + id)
     const { data } = await axios.get(`${RECIPES_API_URL}${id}/`);
     return data;
   } catch (error) {

@@ -1,27 +1,31 @@
 import React, { useContext, useEffect } from "react"
-import './RecipeForm.css';
 import useRecipeState from "../hooks/useRecipeState.tsx";
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { addRecipe, getRecipe, updateRecipe } from "../context/RecipesService.tsx";
 import { RecipeActionTypes } from "../context/types.tsx";
 import { withRouter, RouteComponentProps } from "react-router-dom"
 import { RecipeContext } from "../context/RecipeContext.tsx";
 import styled from 'styled-components';
+import { StyledButton, RecipesListContainer, StyledLinkHeader, RecipesBookContainer, StyleTitle, StyledHeader } from './Styles.tsx';
+import { RecipeItemContainer, RecipeName, RecipeLabel } from "./Styles.tsx";
 
-const RecipeFormContainer = styled.div`
-    margin: 10px auto;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 13px
-    border: 1px solid #ccc;
-    `;
+const RecipesBookContainerAdd = styled(RecipesBookContainer)`
+    padding-bottom: 45px;
+`;
+const StyledButtonIngredient = styled(StyledButton)`
+    margin-top: 10px;
+    float: none;
+`;
+const StyledButtonIngredientDelete = styled(StyledButton)`
+    float: none;
+`;
 
 interface RecipeFormProps extends RouteComponentProps { }
 
 const RecipeForm: React.FC<RecipeFormProps> = (props) => {
 
     const { id } = useParams()
-
-    console.log("(RecipeForm) props: ", props)
+    const { dispatch } = useContext(RecipeContext);
 
     const {
         recipe,
@@ -38,7 +42,6 @@ const RecipeForm: React.FC<RecipeFormProps> = (props) => {
         const fetchRecipe = async (id) => {
             try {
                 let payload = await getRecipe(id)
-                console.log("(RecipeForm) payload: ", payload)
                 setRecipe(payload);
             } catch (error) {
                 dispatch({ type: RecipeActionTypes.ERROR, payload: "Something went wrong" });
@@ -47,14 +50,10 @@ const RecipeForm: React.FC<RecipeFormProps> = (props) => {
         if (id) {
             fetchRecipe(id);
         }
-    }, []);
-
-
-    const { dispatch } = useContext(RecipeContext);
+    }, [dispatch, id, setRecipe]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        console.log("(on submit) recipe: ", recipe)
         try {
             let payload
             if (props.actionType === RecipeActionTypes.ADD_RECIPE) {
@@ -72,34 +71,45 @@ const RecipeForm: React.FC<RecipeFormProps> = (props) => {
     }
 
     return (
-        <RecipeFormContainer>
+        <RecipesBookContainerAdd>
+            <StyledHeader>
+                <StyleTitle>
+                    {props.actionType === RecipeActionTypes.ADD_RECIPE ? "Add Recipe" : "Edit Recipe"}
+                </StyleTitle>
+                <StyledLinkHeader to="/">Back to Home</StyledLinkHeader>
+            </StyledHeader>
             <form onSubmit={(e) => handleSubmit(e)}>
-                <div>
-                    {props.actionType === RecipeActionTypes.ADD_RECIPE ? <h1>Add new Recipe</h1> : <h1>Edit Recipe</h1>}
-                    <label htmlFor="name">Name</label>
-                    <input id="name" value={recipe.name} onChange={(e) => setName(e.target.value)} type="text" />
-                    <label htmlFor="description">Description</label>
-                    <input id="description" type="text" value={recipe.description} onChange={(e) => setDescription(e.target.value)} />
-                    {recipe.ingredients && recipe.ingredients.map((ingredient, index) => (
-                        <div key={index}>
-                            <label htmlFor={`ingredient${index}`}>Ingredient</label>
-                            <input
-                                id={`ingredient${index}`}
-                                value={ingredient.name}
-                                type="text"
-                                onChange={(e) => updateIngredient(index, e)}
-                            />
-                            <button onClick={() => removeIngredient(index)}>(X)</button>
-                        </div>
-                    ))}
-                </div>
-                <div>
-                    <button type="button" onClick={() => addIngredient()}>Add Ingredient</button>
-                </div>
-                <button type="submit">add</button>
-                <Link to="/"><button>back to home</button></Link>
+                <RecipesListContainer>
+
+                    <RecipeItemContainer>
+                        <RecipeName htmlFor="name">Name: </RecipeName>
+                        <input id="name" value={recipe.name} onChange={(e) => setName(e.target.value)} type="text" />
+                        <p>
+                            <RecipeLabel htmlFor="name">Description: </RecipeLabel>
+                            <input id="description" type="text" value={recipe.description} onChange={(e) => setDescription(e.target.value)} />
+                        </p>
+                        {recipe.ingredients && recipe.ingredients.map((ingredient, index) => (
+                            <div key={index}>
+                                <p>
+                                    <RecipeLabel htmlFor={`ingredient${index}`}>Ingredient: </RecipeLabel>
+                                    <input id={`ingredient${index} `}
+                                        value={ingredient.name}
+                                        type="text"
+                                        onChange={(e) => updateIngredient(index, e)} />
+                                    <StyledButtonIngredientDelete type="button" onClick={() => removeIngredient(index)}>(x)</StyledButtonIngredientDelete>
+                                </p>
+                            </div>
+                        ))}
+                    </RecipeItemContainer>
+                    <StyledButtonIngredient type="button" onClick={() => addIngredient()}>
+                        Add Ingredient
+                    </StyledButtonIngredient>
+                </RecipesListContainer>
+                <StyledButton type="submit">
+                    Save
+                </StyledButton>
             </form>
-        </RecipeFormContainer>
+        </RecipesBookContainerAdd>
     )
 }
 

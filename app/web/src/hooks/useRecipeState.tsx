@@ -17,7 +17,7 @@ interface RecipeStateHookResult {
 
 const BLANK_RECIPE: Recipe = { name: "", description: "", ingredients: [] };
 
-export default (): RecipeStateHookResult => {
+const useRecipeState = (): RecipeStateHookResult => {
 
   const [recipe, setState] = useState(BLANK_RECIPE);
   const setRecipe = (recipe: Recipe) => {
@@ -61,3 +61,5 @@ export default (): RecipeStateHookResult => {
   };
   return { recipe, setRecipe, setName, setDescription, addIngredient, removeIngredient, updateIngredient, reset };
 };
+
+export default useRecipeState;

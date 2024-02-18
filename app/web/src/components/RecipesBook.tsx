@@ -1,30 +1,9 @@
-import React, { useEffect, useReducer, useContext } from "react"
+import React, { useEffect, useContext } from "react"
 import RecipesList from './RecipesList.tsx';
 import { RecipeActionTypes } from "../context/types.tsx";
 import { getRecipes } from "../context/RecipesService.tsx";
-import { Link } from 'react-router-dom';
 import { RecipeContext } from '../context/RecipeContext.tsx';
-import styled from 'styled-components';
-import { StyledLink } from './Styles.tsx';
-
-const RecipesBookContainer = styled.div`
-    margin: 10px auto;
-    font-size: 15px;
-    border: 1px solid #eeeeee;
-    background-color: #f9f9f9;
-    padding: 30px;
-`;
-
-const StyleTitle = styled.label`
-    font-size: 40px;
-    color: #333;`;
-
-const StyledHeader = styled.div`
-    margin-bottom: 20px;
-`;
-const StyledLinkAdd = styled(StyledLink)`
-    padding: 8px 16px;
-`;
+import { StyledLinkHeader, RecipesBookContainer, StyleTitle, StyledHeader } from './Styles.tsx';
 
 
 const RecipesBook = () => {
@@ -40,13 +19,13 @@ const RecipesBook = () => {
             }
         };
         fetchRecipes();
-    }, []);
+    }, [dispatch]);
 
     return (
         <RecipesBookContainer>
             <StyledHeader>
                 <StyleTitle>Recipes Book</StyleTitle>
-                <StyledLinkAdd to="/add">Add Recipe</StyledLinkAdd>
+                <StyledLinkHeader to="/add">Add Recipe</StyledLinkHeader>
             </StyledHeader>
             <RecipesList recipes={recipes} />
         </RecipesBookContainer>

@@ -77,3 +77,20 @@ export const RecipeName = styled.label`
 export const RecipeLabel = styled.label`
   color: #666;
 `;
+
+export const StyledRemoveLabel = styled.label`
+    text-decoration: none;
+    color: #333;
+    float: right;
+    background: #dedede;
+    color: #c48a8a;
+    border-radius: 3px;
+    border: 1px solid #a2a2a2;
+    padding: 8px 16px;
+    outline: none;
+    cursor: pointer;
+    font-size: 15px;
+    padding: 8px 16px;
+    margin-left: 5px;
+`;
+

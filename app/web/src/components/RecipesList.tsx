@@ -4,7 +4,7 @@ import { Recipe, RecipeActionTypes } from "../context/types.tsx";
 import { removeRecipe } from "../context/RecipesService.tsx";
 import { RecipeContext } from "../context/RecipeContext.tsx";
 import styled from 'styled-components';
-import { StyledLink, RecipesListContainer } from "./Styles.tsx";
+import { StyledLink, RecipesListContainer, StyledRemoveLabel } from "./Styles.tsx";
 
 const RecipesListSubContainer = styled.div`
     padding: 2px 2px 43px 2px;
@@ -35,9 +35,9 @@ const RecipesList = (props: RecipesListProps) => {
       {props.recipes.map((recipe) =>
         <RecipesListSubContainer key={recipe.id} >
           <RecipeItem {...recipe} />
-          <StyledLink>
-            <label onClick={() => handleDelete(recipe.id)}>Delete</label>
-          </StyledLink>
+          <StyledRemoveLabel onClick={() => handleDelete(recipe.id)}>
+            Delete
+          </StyledRemoveLabel>
           <StyledLink to={`/update/${recipe.id}`}>Edit</StyledLink>
 
         </RecipesListSubContainer>

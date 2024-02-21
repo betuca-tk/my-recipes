@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react"
 import useRecipeState from "../hooks/useRecipeState.tsx";
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { addRecipe, getRecipe, updateRecipe } from "../context/RecipesService.tsx";
 import { RecipeActionTypes } from "../context/types.tsx";
 import { withRouter, RouteComponentProps } from "react-router-dom"
@@ -23,7 +23,7 @@ const StyledButtonIngredientDelete = styled(StyledButton)`
 interface RecipeFormProps extends RouteComponentProps { }
 
 const RecipeForm: React.FC<RecipeFormProps> = (props) => {
-
+    const history = useHistory();
     const { id } = useParams()
     const { dispatch } = useContext(RecipeContext);
 
@@ -61,9 +61,10 @@ const RecipeForm: React.FC<RecipeFormProps> = (props) => {
             } else {
                 payload = await updateRecipe(recipe)
             }
+            console.log('payload: ', payload);
             dispatch({ type: props.actionType, payload: payload });
             reset();
-            props.history.push("/");
+            history.push("/");
 
         } catch (error) {
             dispatch({ type: RecipeActionTypes.ERROR, payload: "Something went wrong" });
@@ -85,14 +86,14 @@ const RecipeForm: React.FC<RecipeFormProps> = (props) => {
                         <RecipeName htmlFor="name">Name: </RecipeName>
                         <input id="name" value={recipe.name} onChange={(e) => setName(e.target.value)} type="text" />
                         <p>
-                            <RecipeLabel htmlFor="name">Description: </RecipeLabel>
+                            <RecipeLabel htmlFor="description">Description: </RecipeLabel>
                             <input id="description" type="text" value={recipe.description} onChange={(e) => setDescription(e.target.value)} />
                         </p>
                         {recipe.ingredients && recipe.ingredients.map((ingredient, index) => (
                             <div key={index}>
                                 <p>
                                     <RecipeLabel htmlFor={`ingredient${index}`}>Ingredient: </RecipeLabel>
-                                    <input id={`ingredient${index} `}
+                                    <input id={`ingredient${index}`}
                                         value={ingredient.name}
                                         type="text"
                                         onChange={(e) => updateIngredient(index, e)} />

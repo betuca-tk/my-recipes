@@ -5,11 +5,7 @@ import { MemoryRouter as Router } from 'react-router-dom';
 import { RecipeContext } from '../context/RecipeContext';
 import RecipesList from './RecipesList';
 
-jest.mock('../context/RecipesService.tsx', () => ({
-    getRecipes: jest.fn(),
-}));
-
-jest.mock('../context/RecipesService.tsx');
+jest.mock('../api/RecipesBEService.tsx');
 jest.mock('./RecipesList.tsx');
 
 const mockRecipes = [{ id: 1, name: 'Recipe 1', description: "something here 1" }, { id: 2, name: 'Recipe 2', description: "something here 2" }];

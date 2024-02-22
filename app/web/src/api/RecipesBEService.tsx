@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Recipe } from "./types";
+import { Recipe } from "../context/types";
 
 const RECIPES_API_DOMAIN = "http://127.0.0.1";
 const RECIPES_API_PORT = "8000";

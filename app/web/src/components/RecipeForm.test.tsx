@@ -4,9 +4,9 @@ import { MemoryRouter } from 'react-router-dom';
 import RecipeForm from './RecipeForm';
 import { RecipeActionTypes } from '../context/types';
 import { RecipeContext } from '../context/RecipeContext';
-import { addRecipe, updateRecipe } from '../context/RecipesService';
+import { addRecipe, updateRecipe } from '../api/RecipesBEService';
 
-jest.mock('../context/RecipesService.tsx', () => ({
+jest.mock('../api/RecipesBEService', () => ({
     addRecipe: jest.fn().mockResolvedValue({ mock: 'data' }),
 }));
 

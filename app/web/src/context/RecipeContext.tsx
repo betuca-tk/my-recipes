@@ -2,7 +2,7 @@ import React, { createContext, useReducer, useEffect } from 'react';
 import recipeReducer from './recipeReducer.tsx';
 import { Recipe, RecipeAction } from './types';
 import { RecipeActionTypes } from "../context/types.tsx";
-import { getRecipes } from "../context/RecipesService.tsx";
+import { getRecipes } from "../api/RecipesBEService.tsx";
 
 export interface RecipeContextInterface {
     recipes: Recipe[];

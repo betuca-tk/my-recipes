@@ -1,7 +1,7 @@
 import React, { useContext } from "react"
 import RecipeItem from "./RecipeItem.tsx"
 import { Recipe, RecipeActionTypes } from "../context/types.tsx";
-import { removeRecipe } from "../context/RecipesService.tsx";
+import { removeRecipe } from "../api/RecipesBEService.tsx";
 import { RecipeContext } from "../context/RecipeContext.tsx";
 import styled from 'styled-components';
 import { StyledLink, RecipesListContainer, StyledRemoveLabel } from "./Styles.tsx";

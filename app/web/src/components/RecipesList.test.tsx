@@ -3,10 +3,10 @@ import RecipesList from './RecipesList.tsx';
 import React from 'react';
 import { RecipeContext } from '../context/RecipeContext';
 import { MemoryRouter as Router } from 'react-router-dom';
-import { removeRecipe } from '../context/RecipesService';
+import { removeRecipe } from '../api/RecipesBEService';
 import { RecipeActionTypes } from '../context/types.tsx';
 
-jest.mock('../context/RecipesService.tsx', () => ({
+jest.mock('../api/RecipesBEService', () => ({
     removeRecipe: jest.fn(),
 }));
 

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react"
 import useRecipeState from "../hooks/useRecipeState.tsx";
 import { useParams, useHistory } from 'react-router-dom';
-import { addRecipe, getRecipe, updateRecipe } from "../context/RecipesService.tsx";
+import { addRecipe, getRecipe, updateRecipe } from "../api/RecipesBEService.tsx";
 import { RecipeActionTypes } from "../context/types.tsx";
 import { withRouter, RouteComponentProps } from "react-router-dom"
 import { RecipeContext } from "../context/RecipeContext.tsx";

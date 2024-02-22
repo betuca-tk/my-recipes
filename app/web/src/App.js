@@ -13,7 +13,7 @@ function App() {
           <Switch>
             <Route exact path="/add" render={() => <RecipeForm actionType={RecipeActionTypes.ADD_RECIPE} />} />
             <Route exact path="/update/:id" render={() => <RecipeForm actionType={RecipeActionTypes.UPDATE_RECIPE} />} />
-            <Route exact path="/" component={RecipesBook} />
+            <Route exact path="*" component={RecipesBook} />
           </Switch>
         </RecipeProvider>
       </div>

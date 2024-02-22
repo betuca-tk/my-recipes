@@ -53,7 +53,6 @@ const RecipeForm: React.FC<RecipeFormProps> = (props) => {
     }, [dispatch, id]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
         try {
             let payload
             if (props.actionType === RecipeActionTypes.ADD_RECIPE) {
@@ -61,7 +60,6 @@ const RecipeForm: React.FC<RecipeFormProps> = (props) => {
             } else {
                 payload = await updateRecipe(recipe)
             }
-            console.log('payload: ', payload);
             dispatch({ type: props.actionType, payload: payload });
             reset();
             history.push("/");
@@ -79,37 +77,34 @@ const RecipeForm: React.FC<RecipeFormProps> = (props) => {
                 </StyleTitle>
                 <StyledLinkHeader to="/">Back to Home</StyledLinkHeader>
             </StyledHeader>
-            <form onSubmit={(e) => handleSubmit(e)}>
-                <RecipesListContainer>
-
-                    <RecipeItemContainer>
-                        <RecipeName htmlFor="name">Name: </RecipeName>
-                        <input id="name" value={recipe.name} onChange={(e) => setName(e.target.value)} type="text" />
-                        <p>
-                            <RecipeLabel htmlFor="description">Description: </RecipeLabel>
-                            <input id="description" type="text" value={recipe.description} onChange={(e) => setDescription(e.target.value)} />
-                        </p>
-                        {recipe.ingredients && recipe.ingredients.map((ingredient, index) => (
-                            <div key={index}>
-                                <p>
-                                    <RecipeLabel htmlFor={`ingredient${index}`}>Ingredient: </RecipeLabel>
-                                    <input id={`ingredient${index}`}
-                                        value={ingredient.name}
-                                        type="text"
-                                        onChange={(e) => updateIngredient(index, e)} />
-                                    <StyledButtonIngredientDelete type="button" onClick={() => removeIngredient(index)}>(x)</StyledButtonIngredientDelete>
-                                </p>
-                            </div>
-                        ))}
-                    </RecipeItemContainer>
-                    <StyledButtonIngredient type="button" onClick={() => addIngredient()}>
-                        Add Ingredient
-                    </StyledButtonIngredient>
-                </RecipesListContainer>
-                <StyledButton type="submit">
-                    Save
-                </StyledButton>
-            </form>
+            <RecipesListContainer>
+                <RecipeItemContainer>
+                    <RecipeName htmlFor="name">Name: </RecipeName>
+                    <input id="name" value={recipe.name} onChange={(e) => setName(e.target.value)} type="text" />
+                    <p>
+                        <RecipeLabel htmlFor="description">Description: </RecipeLabel>
+                        <input id="description" type="text" value={recipe.description} onChange={(e) => setDescription(e.target.value)} />
+                    </p>
+                    {recipe.ingredients && recipe.ingredients.map((ingredient, index) => (
+                        <div key={index}>
+                            <p>
+                                <RecipeLabel htmlFor={`ingredient${index}`}>Ingredient: </RecipeLabel>
+                                <input id={`ingredient${index}`}
+                                    value={ingredient.name}
+                                    type="text"
+                                    onChange={(e) => updateIngredient(index, e)} />
+                                <StyledButtonIngredientDelete type="button" onClick={() => removeIngredient(index)}>(x)</StyledButtonIngredientDelete>
+                            </p>
+                        </div>
+                    ))}
+                </RecipeItemContainer>
+                <StyledButtonIngredient type="button" onClick={() => addIngredient()}>
+                    Add Ingredient
+                </StyledButtonIngredient>
+            </RecipesListContainer>
+            <StyledButton type="submit" onClick={handleSubmit}>
+                Save
+            </StyledButton>
         </RecipesBookContainerAdd>
     )
 }

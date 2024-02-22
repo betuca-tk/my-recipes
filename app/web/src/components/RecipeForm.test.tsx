@@ -1,12 +1,10 @@
 import React from 'react';
-import { render, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import RecipeForm from './RecipeForm';
 import { RecipeActionTypes } from '../context/types';
 import { RecipeContext } from '../context/RecipeContext';
 import { addRecipe, updateRecipe } from '../context/RecipesService';
-
-jest.mock('../context/RecipesService');
 
 jest.mock('../context/RecipesService.tsx', () => ({
     addRecipe: jest.fn().mockResolvedValue({ mock: 'data' }),
@@ -21,7 +19,7 @@ jest.mock('react-router-dom', () => ({
     }),
 }));
 
-const mockDispatch = jest.fn((arg) => { console.log('mocked dispatch: ', arg) });
+const mockDispatch = jest.fn();
 
 function renderWithRouter(Component) {
     return render(
@@ -42,17 +40,15 @@ describe('RecipeForm', () => {
     afterEach(jest.resetAllMocks);
 
     it('should submits the form to add a new recipe', async () => {
-        wraper = renderWithRouter(<RecipeForm actionType={RecipeActionTypes.ADD_RECIPE} />);
+        renderWithRouter(<RecipeForm actionType={RecipeActionTypes.ADD_RECIPE} />);
 
-        const { getByLabelText, getByText } = wraper;
+        fireEvent.change(screen.getByLabelText('Name:'), { target: { value: 'New Recipe' } });
+        fireEvent.change(screen.getByLabelText('Description:'), { target: { value: 'New Recipe Description' } });
 
-        fireEvent.change(getByLabelText('Name:'), { target: { value: 'New Recipe' } });
-        fireEvent.change(getByLabelText('Description:'), { target: { value: 'New Recipe Description' } });
+        fireEvent.click(screen.getByText('Add Ingredient'));
+        fireEvent.change(screen.getByLabelText('Ingredient:'), { target: { value: 'Ingredient 1' } });
 
-        fireEvent.click(getByText('Add Ingredient'));
-        fireEvent.change(getByLabelText('Ingredient:'), { target: { value: 'Ingredient 1' } });
-
-        fireEvent.submit(getByText('Save'));
+        fireEvent.click(screen.getByText('Save'));
 
         await waitFor(() => {
             expect(addRecipe).toHaveBeenCalledWith({

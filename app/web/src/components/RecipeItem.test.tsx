@@ -16,13 +16,13 @@ describe('RecipeItem', () => {
   test('renders recipe name', () => {
     render(<RecipeItem {...recipe} />);
     const recipeNameElement = screen.getByText('Test Recipe');
-    expect(recipeNameElement).toBeInTheDocument();
+    expect(recipeNameElement).toBeVisible();
   });
 
   test('renders recipe description', () => {
     render(<RecipeItem {...recipe} />);
     const recipeDescriptionElement = screen.getByText('Test Description');
-    expect(recipeDescriptionElement).toBeInTheDocument();
+    expect(recipeDescriptionElement).toBeVisible();
   });
 
   test('renders each ingredient', () => {
